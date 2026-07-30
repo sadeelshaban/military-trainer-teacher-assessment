@@ -39,7 +39,8 @@ function AdminLogin({ onLogin, onBack }) {
 
   return (
     <div className="admin-login">
-      <h2>🔐 دخول الإدارة</h2>
+      <img src="/logo.png" alt="" className="welcome-logo" />
+      <h2>دخول الإدارة</h2>
       <form onSubmit={handleSubmit}>
         <label className="field-label" htmlFor="admin-pass">كلمة المرور</label>
         <input

@@ -63,7 +63,7 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-inner">
-          <img src="/logo.png" alt="" className="header-logo" />
+          <img src="/logo.png" alt="لجنة تقييم كادر جامعة الاستقلال" className="header-logo" />
           <div>
             <strong>لجنة تقييم كادر جامعة الاستقلال</strong>
             <span>نظام التقييم الذاتي</span>

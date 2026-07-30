@@ -18,7 +18,7 @@ export default function Welcome({ onStart }) {
 
   return (
     <div className="welcome">
-      <img src="/logo.png" alt="" className="welcome-logo" />
+      <img src="/logo.png" alt="لجنة تقييم كادر جامعة الاستقلال" className="welcome-logo" />
       <div className="welcome-badge">نظام التقييم الذاتي</div>
       <h1>لجنة تقييم كادر جامعة الاستقلال</h1>
       <p className="welcome-lead">
