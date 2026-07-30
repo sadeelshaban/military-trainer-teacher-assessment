@@ -22,12 +22,15 @@ export default function App() {
     setStep(STEPS.quiz);
   }
 
-  function handleComplete() {
-    const classified = classify(scores, userInfo.role, userInfo.name);
+  function handleComplete({ distinguishedEvaluated = true, finalScores = null } = {}) {
+    const final = finalScores ?? scores;
+    const classified = classify(final, userInfo.role, userInfo.name, {
+      distinguishedEvaluated,
+    });
     const record = createAssessmentRecord(
       userInfo.name,
       userInfo.role,
-      scores,
+      final,
       classified,
     );
     saveAssessment(record);
@@ -67,11 +70,7 @@ export default function App() {
 
       <main className="app-main">
         {step === STEPS.welcome && (
-          <Welcome
-            key={refreshKey}
-            onStart={handleStart}
-            onAdmin={() => setStep(STEPS.admin)}
-          />
+          <Welcome key={refreshKey} onStart={handleStart} />
         )}
         {step === STEPS.quiz && userInfo.role && (
           <Questionnaire
@@ -91,7 +90,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>نموذج معايير التقييم الذاتي — الإصدار 1.2</p>
+        <p>نموذج معايير التقييم الذاتي — الإصدار 1.3</p>
       </footer>
     </div>
   );

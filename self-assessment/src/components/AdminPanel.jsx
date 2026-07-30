@@ -165,7 +165,11 @@ export default function AdminPanel({ onBack }) {
                       </span>
                     </td>
                     <td>{r.result.averages.base}/5</td>
-                    <td>{r.result.averages.distinguished}/5</td>
+                    <td>
+                      {r.result.distinguishedEvaluated && r.result.averages.distinguished != null
+                        ? `${r.result.averages.distinguished}/5`
+                        : '—'}
+                    </td>
                     <td>
                       {new Date(r.createdAt).toLocaleDateString('ar-SA', {
                         year: 'numeric',

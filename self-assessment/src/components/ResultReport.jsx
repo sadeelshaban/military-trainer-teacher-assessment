@@ -49,6 +49,9 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
     nextGoal,
     excellentCount,
     levelKey,
+    distinguishedEvaluated,
+    classificationReasons,
+    basePass,
   } = result;
 
   const dateStr = completedAt
@@ -83,6 +86,23 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
         <p className="result-desc">{meta.description}</p>
       </div>
 
+      {!distinguishedEvaluated && !basePass && (
+        <div className="skip-notice">
+          ⚠️ لم تُقيَّم معايير التميز — يجب اجتياز المعايير الأساسية أولاً.
+        </div>
+      )}
+
+      {classificationReasons?.length > 0 && (
+        <section className="results-section reasons-section">
+          <h2>أسباب التصنيف</h2>
+          <ul className="reasons-list">
+            {classificationReasons.map((reason) => (
+              <li key={reason}>{reason}</li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       <LevelLadder ladder={ladder} currentIndex={currentLadderIndex} />
 
       <div className="stats-grid">
@@ -91,11 +111,13 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
           <span className="stat-value">{averages.base}</span>
           <span className="stat-hint">من 5 — الحد الأدنى للنجاح: 3.5</span>
         </div>
-        <div className="stat-card">
-          <span className="stat-label">متوسط معايير التميز</span>
-          <span className="stat-value">{averages.distinguished}</span>
-          <span className="stat-hint">من 5 — مطلوب للتميز: 4.0</span>
-        </div>
+        {distinguishedEvaluated && averages.distinguished != null && (
+          <div className="stat-card">
+            <span className="stat-label">متوسط معايير التميز</span>
+            <span className="stat-value">{averages.distinguished}</span>
+            <span className="stat-hint">من 5 — مطلوب للتميز: 4.0</span>
+          </div>
+        )}
         {levelKey === 'distinguished' && (
           <div className="stat-card highlight">
             <span className="stat-label">معايير ممتازة (5/5)</span>
@@ -124,10 +146,10 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
         </section>
       )}
 
-      {gaps.length === 0 && levelKey !== 'distinguished' && (
+      {gaps.length === 0 && levelKey === 'distinguished' && (
         <section className="results-section">
           <div className="all-good-note">
-            ✅ جميع المعايير 4/5 فأعلى — استمر للوصول لمستوى التميز!
+            ✅ أداء ممتاز في جميع المعايير المُقيَّمة!
           </div>
         </section>
       )}
@@ -146,7 +168,7 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
       )}
 
       <section className="results-section breakdown-section">
-        <h2>ملخص جميع المعايير</h2>
+        <h2>ملخص المعايير المُقيَّمة</h2>
         {levelBreakdown.map((section) => (
           <div key={section.level} className="breakdown-block">
             <h3 style={{ color: section.color }}>

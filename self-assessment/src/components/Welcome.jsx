@@ -1,13 +1,10 @@
 import { useState } from 'react';
 import { ROLES } from '../data/criteria';
-import { getDashboardStats } from '../utils/storage';
-import DashboardCharts from './DashboardCharts';
 
-export default function Welcome({ onStart, onAdmin }) {
+export default function Welcome({ onStart }) {
   const [name, setName] = useState('');
   const [role, setRole] = useState(null);
   const [nameError, setNameError] = useState('');
-  const stats = getDashboardStats();
 
   function handleStart() {
     const trimmed = name.trim();
@@ -21,13 +18,11 @@ export default function Welcome({ onStart, onAdmin }) {
 
   return (
     <div className="welcome">
-      <DashboardCharts stats={stats} />
-
       <div className="welcome-badge">تقييم ذاتي</div>
       <h1>نموذج تقييم المدرب والمعلم العسكري</h1>
       <p className="welcome-lead">
-        سجّل اسمك، اختر دورك، ثم أجب عن 24 سؤالاً للحصول على تصنيفك
-        وخطة تطوير مفصّلة.
+        سجّل اسمك، اختر دورك، ثم أجب عن المعايير الأساسية (12 سؤالاً).
+        إذا اجتزتها، تنتقل لمعايير التميز.
       </p>
 
       <div className="register-form">
@@ -66,27 +61,22 @@ export default function Welcome({ onStart, onAdmin }) {
       </div>
 
       <div className="info-box">
-        <h4>مستويات التصنيف</h4>
+        <h4>كيف يعمل التصنيف؟</h4>
         <ul>
-          <li><strong>ناجح</strong> — متوسط 3.5+ على المعايير الأساسية</li>
-          <li><strong>متميز</strong> — ناجح + متوسط 4+ على معايير التميز</li>
-          <li><strong>في مسار التطوير</strong> — دون الحد الأدنى للنجاح، مع إمكانية التطور</li>
+          <li><strong>المرحلة 1:</strong> 12 معياراً أساسياً — يجب اجتيازها (متوسط 3.5+)</li>
+          <li><strong>المرحلة 2:</strong> معايير التميز — فقط إذا نجحت بالمرحلة 1</li>
+          <li><strong>في مسار التطوير:</strong> إذا لم تستوفِ المعايير الأساسية</li>
         </ul>
       </div>
 
-      <div className="welcome-actions">
-        <button
-          type="button"
-          className="btn-primary"
-          onClick={handleStart}
-          disabled={!role}
-        >
-          ابدأ التقييم
-        </button>
-        <button type="button" className="btn-admin" onClick={onAdmin}>
-          🔐 دخول الإدارة
-        </button>
-      </div>
+      <button
+        type="button"
+        className="btn-primary btn-start"
+        onClick={handleStart}
+        disabled={!role}
+      >
+        ابدأ التقييم
+      </button>
     </div>
   );
 }
