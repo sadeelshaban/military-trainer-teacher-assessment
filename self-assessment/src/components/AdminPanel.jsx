@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ADMIN_PASSWORD } from '../config';
+import { ADMIN_PASSWORD, isAdminConfigured } from '../config';
 import { ROLES } from '../data/criteria';
 import { getAssessmentById, getDashboardStats, loadAssessments } from '../utils/storage';
 import { exportResultsPdf } from '../utils/exportPdf';
@@ -11,6 +11,21 @@ const AUTH_KEY = 'admin_authenticated';
 function AdminLogin({ onLogin, onBack }) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  if (!isAdminConfigured()) {
+    return (
+      <div className="admin-login">
+        <h2>🔐 Admin access</h2>
+        <p className="form-error">
+          Admin password is not configured. Set <code>VITE_ADMIN_PASSWORD</code> in your{' '}
+          <code>.env</code> file (see <code>.env.example</code>).
+        </p>
+        <button type="button" className="btn-secondary" onClick={onBack}>
+          Back
+        </button>
+      </div>
+    );
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
