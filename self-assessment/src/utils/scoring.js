@@ -141,22 +141,30 @@ export function classify(scores, roleId, userName = '', { distinguishedEvaluated
   let levelKey = 'needs_development';
   let classificationReasons = [...baseFailReasons];
 
+  if (distinguishedEvaluated) {
+    distEval = evaluateDistinguishedLevel(scores, roleId);
+  }
+
   if (!basePass) {
     levelKey = 'needs_development';
-    distinguishedEvaluated = false;
-  } else if (!distinguishedEvaluated) {
-    levelKey = 'success';
-  } else {
-    distEval = evaluateDistinguishedLevel(scores, roleId);
-    if (distEval.distPass) {
-      levelKey = 'distinguished';
-    } else {
-      levelKey = 'success';
+    if (distinguishedEvaluated) {
       classificationReasons = [
-        'حققت مستوى النجاح الأساسي، لكن معايير التميز تحتاج تعزيزاً:',
-        ...distEval.failReasons,
+        ...baseFailReasons,
+        'لم تتحقق معايير التميز — لم تجتز معايير النجاح الأساسية',
       ];
     }
+  } else if (distEval?.distPass) {
+    levelKey = 'distinguished';
+    classificationReasons = [];
+  } else if (distEval) {
+    levelKey = 'success';
+    classificationReasons = [
+      'حققت مستوى النجاح الأساسي، لكن معايير التميز تحتاج تعزيزاً:',
+      ...distEval.failReasons,
+    ];
+  } else {
+    levelKey = 'success';
+    classificationReasons = [];
   }
 
   const meta = { ...role.levels[levelKey] };
@@ -209,7 +217,7 @@ export function classify(scores, roleId, userName = '', { distinguishedEvaluated
     },
     excellentCount: distEval?.excellentCount ?? 0,
     basePass,
-    distPass: distEval?.distPass ?? false,
+    distPass: basePass && (distEval?.distPass ?? false),
     distinguishedEvaluated,
     classificationReasons,
     gaps,

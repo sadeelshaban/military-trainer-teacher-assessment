@@ -72,6 +72,7 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
     <div ref={pdfRef} className="pdf-content">
       <div className="pdf-header">
         <h2>تقرير التقييم الذاتي</h2>
+        <p>لجنة تقييم كادر جامعة الاستقلال</p>
         <p>
           {userName && <span>{userName} — </span>}
           {roleLabel} — {dateStr}
@@ -86,9 +87,9 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
         <p className="result-desc">{meta.description}</p>
       </div>
 
-      {!distinguishedEvaluated && !basePass && (
+      {!basePass && distinguishedEvaluated && (
         <div className="skip-notice">
-          ⚠️ لم تُقيَّم معايير التميز — يجب اجتياز المعايير الأساسية أولاً.
+          ⚠️ لم تتحقق معايير التميز — لم تجتز معايير النجاح الأساسية.
         </div>
       )}
 

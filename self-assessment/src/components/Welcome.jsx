@@ -18,11 +18,12 @@ export default function Welcome({ onStart }) {
 
   return (
     <div className="welcome">
-      <div className="welcome-badge">تقييم ذاتي</div>
-      <h1>نموذج تقييم المدرب والمعلم العسكري</h1>
+      <img src="/logo.png" alt="" className="welcome-logo" />
+      <div className="welcome-badge">نظام التقييم الذاتي</div>
+      <h1>لجنة تقييم كادر جامعة الاستقلال</h1>
       <p className="welcome-lead">
-        سجّل اسمك، اختر دورك، ثم أجب عن المعايير الأساسية (12 سؤالاً).
-        إذا اجتزتها، تنتقل لمعايير التميز.
+        سجّل اسمك، اختر دورك، ثم أجب عن جميع المعايير (24 سؤالاً — النجاح والتميز معاً).
+        يُقيَّم مستوى النجاح والتميز في النهاية.
       </p>
 
       <div className="register-form">
@@ -63,9 +64,10 @@ export default function Welcome({ onStart }) {
       <div className="info-box">
         <h4>كيف يعمل التصنيف؟</h4>
         <ul>
-          <li><strong>المرحلة 1:</strong> 12 معياراً أساسياً — يجب اجتيازها (متوسط 3.5+)</li>
-          <li><strong>المرحلة 2:</strong> معايير التميز — فقط إذا نجحت بالمرحلة 1</li>
-          <li><strong>في مسار التطوير:</strong> إذا لم تستوفِ المعايير الأساسية</li>
+          <li><strong>جميع الأسئلة:</strong> 12 معيار نجاح + 12 معيار تميز في استبيان واحد</li>
+          <li><strong>النجاح:</strong> متوسط 3.5+ في المعايير الأساسية مع شروط إضافية</li>
+          <li><strong>التميز:</strong> يُقيَّم فقط إذا نجحت — وإلا تُسجَّل «لم تتحقق معايير التميز»</li>
+          <li><strong>في مسار التطوير:</strong> إذا لم تستوفِ معايير النجاح</li>
         </ul>
       </div>
 

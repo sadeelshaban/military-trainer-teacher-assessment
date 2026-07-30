@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ROLES, getCriteriaForRole, getSectionLabel, LEVELS } from '../data/criteria';
-import { completionPercent, evaluateBaseLevel } from '../utils/scoring';
+import { completionPercent } from '../utils/scoring';
 import ProgressBar from './ProgressBar';
 import RatingScale from './RatingScale';
 
@@ -13,64 +13,33 @@ export default function Questionnaire({
   saving = false,
   saveError = '',
 }) {
-  const [phase, setPhase] = useState('base');
   const [questionIndex, setQuestionIndex] = useState(0);
 
   const role = ROLES[roleId];
-  const baseLevel = role.baseLevel;
-  const currentLevel = phase === 'distinguished' ? 'distinguished' : baseLevel;
-  const sectionCriteria = getCriteriaForRole(roleId).filter((c) => c.level === currentLevel);
-  const current = sectionCriteria[questionIndex];
-
-  const baseCount = getCriteriaForRole(roleId).filter((c) => c.level === baseLevel).length;
-  const distCount = getCriteriaForRole(roleId).filter((c) => c.level === 'distinguished').length;
-
-  const globalIndex =
-    phase === 'distinguished' ? baseCount + questionIndex : questionIndex;
-
-  const totalQuestions = phase === 'distinguished' ? baseCount + distCount : baseCount;
+  const allCriteria = getCriteriaForRole(roleId);
+  const current = allCriteria[questionIndex];
+  const totalQuestions = allCriteria.length;
   const currentScore = scores[current.id] ?? 0;
-  const sectionTitle = getSectionLabel(roleId, currentLevel);
+  const sectionTitle = getSectionLabel(roleId, current.level);
+  const isDistinguishedQuestion = current.level === 'distinguished';
 
   function handleRating(value) {
     setScores((prev) => ({ ...prev, [current.id]: value }));
   }
 
   function goNext() {
-    const isLastInPhase = questionIndex === sectionCriteria.length - 1;
+    const latestScores = { ...scores, [current.id]: currentScore };
 
-    if (phase === 'base' && isLastInPhase) {
-      const latestScores = { ...scores, [current.id]: currentScore };
-      const baseEval = evaluateBaseLevel(latestScores, roleId);
-      if (!baseEval.basePass) {
-        onComplete({ distinguishedEvaluated: false, finalScores: latestScores });
-        return;
-      }
-      setPhase('dist_intro');
+    if (questionIndex === totalQuestions - 1) {
+      onComplete({ distinguishedEvaluated: true, finalScores: latestScores });
       return;
     }
 
-    if (phase === 'distinguished' && isLastInPhase) {
-      onComplete({
-        distinguishedEvaluated: true,
-        finalScores: { ...scores, [current.id]: currentScore },
-      });
-      return;
-    }
-
+    setScores(latestScores);
     setQuestionIndex((i) => i + 1);
   }
 
   function goPrev() {
-    if (phase === 'dist_intro') {
-      setPhase('base');
-      setQuestionIndex(baseCount - 1);
-      return;
-    }
-    if (phase === 'distinguished' && questionIndex === 0) {
-      setPhase('dist_intro');
-      return;
-    }
     if (questionIndex > 0) {
       setQuestionIndex((i) => i - 1);
     } else {
@@ -78,47 +47,13 @@ export default function Questionnaire({
     }
   }
 
-  function startDistinguished() {
-    setPhase('distinguished');
-    setQuestionIndex(0);
-  }
-
   const canProceed = currentScore >= 1 && currentScore <= 5;
-
-  if (phase === 'dist_intro') {
-    return (
-      <div className="questionnaire">
-        <div className="phase-gate">
-          <div className="phase-gate-icon">✅</div>
-          <h2>أحسنت! اجتزت المعايير الأساسية</h2>
-          <p>
-            بناءً على إجاباتك، أنت مؤهل لتقييم <strong>معايير التميز</strong>
-            {' '}({distCount} أسئلة) لتحديد إن كنت «{role.levels.distinguished.title}».
-          </p>
-          <div className="nav-buttons">
-            <button type="button" className="btn-secondary" onClick={goPrev}>
-              مراجعة الإجابات
-            </button>
-            <button type="button" className="btn-primary" onClick={startDistinguished}>
-              متابعة — معايير التميز
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const nextLabel =
-    phase === 'base' && questionIndex === sectionCriteria.length - 1
-      ? 'تقييم المرحلة الأساسية'
-      : phase === 'distinguished' && questionIndex === sectionCriteria.length - 1
-        ? 'عرض النتائج'
-        : 'التالي';
+  const nextLabel = questionIndex === totalQuestions - 1 ? 'عرض النتائج' : 'التالي';
 
   return (
     <div className="questionnaire">
       <ProgressBar
-        current={globalIndex + 1}
+        current={questionIndex + 1}
         total={totalQuestions}
         sectionTitle={sectionTitle}
       />
@@ -127,21 +62,20 @@ export default function Questionnaire({
         <div className="question-header">
           <span
             className="question-level"
-            style={{ background: LEVELS[currentLevel]?.color ?? '#1e3a5f' }}
+            style={{ background: LEVELS[current.level]?.color ?? '#1e3a5f' }}
           >
             {sectionTitle}
           </span>
           <span className="question-num">
-            سؤال {globalIndex + 1} من {totalQuestions}
+            سؤال {questionIndex + 1} من {totalQuestions}
           </span>
         </div>
 
-        {phase === 'base' && (
-          <p className="phase-note">المرحلة 1: المعايير الأساسية — يجب اجتيازها للانتقال للتميز</p>
-        )}
-        {phase === 'distinguished' && (
-          <p className="phase-note phase-note-gold">المرحلة 2: معايير التميز</p>
-        )}
+        <p className={`phase-note ${isDistinguishedQuestion ? 'phase-note-gold' : ''}`}>
+          {isDistinguishedQuestion
+            ? 'معايير التميز — تُقيَّم مع النجاح في النهاية'
+            : 'معايير النجاح — تُقيَّم مع التميز في النهاية'}
+        </p>
 
         <h2 className="criterion-name">{current.name}</h2>
         <p className="question-text">{current.question}</p>
@@ -159,7 +93,7 @@ export default function Questionnaire({
 
         <div className="nav-buttons">
           <button type="button" className="btn-secondary" onClick={goPrev} disabled={saving}>
-            {globalIndex === 0 ? 'العودة' : 'السابق'}
+            {questionIndex === 0 ? 'العودة' : 'السابق'}
           </button>
           <button
             type="button"
@@ -174,11 +108,7 @@ export default function Questionnaire({
         {saveError && <p className="form-error">{saveError}</p>}
 
         <p className="completion-note">
-          نسبة الإكمال:{' '}
-          {completionPercent(scores, roleId, {
-            includeDistinguished: phase === 'distinguished',
-          })}
-          %
+          نسبة الإكمال: {completionPercent(scores, roleId)}%
         </p>
       </div>
     </div>

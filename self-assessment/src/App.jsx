@@ -63,10 +63,10 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div className="header-inner">
-          <span className="header-icon">⚔</span>
+          <img src="/logo.png" alt="" className="header-logo" />
           <div>
-            <strong>التقييم الذاتي</strong>
-            <span>المدرب والمعلم العسكري</span>
+            <strong>لجنة تقييم كادر جامعة الاستقلال</strong>
+            <span>نظام التقييم الذاتي</span>
           </div>
           {step !== STEPS.admin && (
             <button
@@ -104,7 +104,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>نموذج معايير التقييم الذاتي — الإصدار 1.3</p>
+        <p>لجنة تقييم كادر جامعة الاستقلال — نظام التقييم الذاتي</p>
       </footer>
     </div>
   );
