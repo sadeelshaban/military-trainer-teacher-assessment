@@ -35,11 +35,7 @@ Database: **Supabase** — table `assessments` (see `supabase/migrations/001_ass
 - Password is set via environment variable `VITE_ADMIN_PASSWORD` (see `.env.example`)
 - **Do not commit `.env` or expose the password in the repository**
 
-For production (GitHub Pages), set secrets in the repository:
-
-- `VITE_ADMIN_PASSWORD`
-- `VITE_SUPABASE_URL`
-- `VITE_SUPABASE_ANON_KEY`
+For production (Vercel), environment variables are configured in the Vercel project dashboard.
 
 ## Assessment levels
 

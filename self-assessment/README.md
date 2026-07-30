@@ -36,7 +36,7 @@ npm run build
 | `VITE_ADMIN_PASSWORD` | Yes (for admin) | Admin panel password. Never commit to git. |
 | `VITE_SUPABASE_URL` | Yes (production) | Supabase project URL |
 | `VITE_SUPABASE_ANON_KEY` | Yes (production) | Supabase anon/public key |
-| `VITE_BASE_PATH` | GitHub Pages only | e.g. `/military-trainer-teacher-assessment/` |
+| `VITE_BASE_PATH` | Optional | Custom base path for static hosting |
 
 Without Supabase env vars, assessments fall back to browser `localStorage` (local dev only).
 
