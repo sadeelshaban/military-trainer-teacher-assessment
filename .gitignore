@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build
+self-assessment/dist/
+
+# Env
+.env
+.env.local
+*.local
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Temp
+fix_typo.py
