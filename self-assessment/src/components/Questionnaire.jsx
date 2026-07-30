@@ -4,7 +4,15 @@ import { completionPercent, evaluateBaseLevel } from '../utils/scoring';
 import ProgressBar from './ProgressBar';
 import RatingScale from './RatingScale';
 
-export default function Questionnaire({ roleId, scores, setScores, onComplete, onBack }) {
+export default function Questionnaire({
+  roleId,
+  scores,
+  setScores,
+  onComplete,
+  onBack,
+  saving = false,
+  saveError = '',
+}) {
   const [phase, setPhase] = useState('base');
   const [questionIndex, setQuestionIndex] = useState(0);
 
@@ -150,18 +158,20 @@ export default function Questionnaire({ roleId, scores, setScores, onComplete, o
         <RatingScale value={currentScore} onChange={handleRating} />
 
         <div className="nav-buttons">
-          <button type="button" className="btn-secondary" onClick={goPrev}>
+          <button type="button" className="btn-secondary" onClick={goPrev} disabled={saving}>
             {globalIndex === 0 ? 'العودة' : 'السابق'}
           </button>
           <button
             type="button"
             className="btn-primary"
             onClick={goNext}
-            disabled={!canProceed}
+            disabled={!canProceed || saving}
           >
-            {nextLabel}
+            {saving ? 'جاري الحفظ...' : nextLabel}
           </button>
         </div>
+
+        {saveError && <p className="form-error">{saveError}</p>}
 
         <p className="completion-note">
           نسبة الإكمال:{' '}

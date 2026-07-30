@@ -17,11 +17,17 @@ A self-assessment web application for military trainers and teachers, with refer
 ```bash
 cd self-assessment
 npm install
-cp .env.example .env   # then set VITE_ADMIN_PASSWORD in .env
+cp .env.example .env   # set VITE_ADMIN_PASSWORD + Supabase keys in .env
 npm run dev
 ```
 
 Open http://localhost:5173
+
+## Live link
+
+https://military-trainer-assessment.vercel.app
+
+Database: **Supabase** — table `assessments` (see `supabase/migrations/001_assessments.sql`).
 
 ## Admin panel
 
@@ -29,7 +35,11 @@ Open http://localhost:5173
 - Password is set via environment variable `VITE_ADMIN_PASSWORD` (see `.env.example`)
 - **Do not commit `.env` or expose the password in the repository**
 
-For production (Vercel, Netlify, etc.), set `VITE_ADMIN_PASSWORD` in your hosting provider's environment settings.
+For production (GitHub Pages), set secrets in the repository:
+
+- `VITE_ADMIN_PASSWORD`
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
 
 ## Assessment levels
 

@@ -25,3 +25,5 @@ __pycache__/
 
 # Temp
 fix_typo.py
+supabase/.temp/
+self-assessment/supabase/.temp/

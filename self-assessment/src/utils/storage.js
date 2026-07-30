@@ -1,11 +1,34 @@
 import { STORAGE_KEY, LEGACY_STORAGE_KEY } from '../config';
+import { getSupabase, isSupabaseConfigured } from '../lib/supabase';
+
+function rowToRecord(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    roleId: row.role_id,
+    scores: row.scores,
+    result: row.result,
+    createdAt: row.created_at,
+  };
+}
+
+function recordToRow(record) {
+  return {
+    id: record.id,
+    name: record.name,
+    role_id: record.roleId,
+    scores: record.scores,
+    result: record.result,
+    created_at: record.createdAt,
+  };
+}
 
 export function migrateStorage() {
   localStorage.removeItem(LEGACY_STORAGE_KEY);
   localStorage.removeItem('military_assessments_v2');
 }
 
-export function loadAssessments() {
+function loadAssessmentsLocal() {
   migrateStorage();
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -15,25 +38,72 @@ export function loadAssessments() {
   }
 }
 
-export function saveAssessment(record) {
-  const list = loadAssessments();
+function saveAssessmentLocal(record) {
+  const list = loadAssessmentsLocal();
   list.unshift(record);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
   return record;
 }
 
-export function clearAllAssessments() {
+export async function loadAssessments() {
+  if (!isSupabaseConfigured()) {
+    return loadAssessmentsLocal();
+  }
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('assessments')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return (data ?? []).map(rowToRecord);
+}
+
+export async function saveAssessment(record) {
+  if (!isSupabaseConfigured()) {
+    return saveAssessmentLocal(record);
+  }
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from('assessments')
+    .insert(recordToRow(record))
+    .select('*')
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return rowToRecord(data);
+}
+
+export async function clearAllAssessments() {
   localStorage.removeItem(STORAGE_KEY);
   localStorage.removeItem(LEGACY_STORAGE_KEY);
+
+  if (!isSupabaseConfigured()) {
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { error } = await supabase.from('assessments').delete().neq('id', '00000000-0000-0000-0000-000000000000');
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }
 
-export function getAssessmentById(id) {
-  return loadAssessments().find((a) => a.id === id) ?? null;
+export async function getAssessmentById(id) {
+  const list = await loadAssessments();
+  return list.find((a) => a.id === id) ?? null;
 }
 
-export function getDashboardStats() {
-  const list = loadAssessments();
-
+export function getDashboardStats(list) {
   const levelCounts = {
     needs_development: 0,
     success: 0,

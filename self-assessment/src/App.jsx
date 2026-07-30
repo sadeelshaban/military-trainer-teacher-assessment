@@ -15,6 +15,8 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [userInfo, setUserInfo] = useState({ role: null, name: '' });
   const [refreshKey, setRefreshKey] = useState(0);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
 
   function handleStart({ role, name }) {
     setUserInfo({ role, name });
@@ -22,7 +24,7 @@ export default function App() {
     setStep(STEPS.quiz);
   }
 
-  function handleComplete({ distinguishedEvaluated = true, finalScores = null } = {}) {
+  async function handleComplete({ distinguishedEvaluated = true, finalScores = null } = {}) {
     const final = finalScores ?? scores;
     const classified = classify(final, userInfo.role, userInfo.name, {
       distinguishedEvaluated,
@@ -33,10 +35,20 @@ export default function App() {
       final,
       classified,
     );
-    saveAssessment(record);
-    setResult(classified);
-    setStep(STEPS.results);
-    setRefreshKey((k) => k + 1);
+
+    setSaving(true);
+    setSaveError('');
+
+    try {
+      await saveAssessment(record);
+      setResult(classified);
+      setStep(STEPS.results);
+      setRefreshKey((k) => k + 1);
+    } catch (err) {
+      setSaveError(err?.message ?? 'تعذّر حفظ التقييم. تحقق من الاتصال وحاول مرة أخرى.');
+    } finally {
+      setSaving(false);
+    }
   }
 
   function handleRestart() {
@@ -79,6 +91,8 @@ export default function App() {
             setScores={setScores}
             onComplete={handleComplete}
             onBack={() => setStep(STEPS.welcome)}
+            saving={saving}
+            saveError={saveError}
           />
         )}
         {step === STEPS.results && result && (

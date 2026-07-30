@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ADMIN_PASSWORD, isAdminConfigured } from '../config';
 import { ROLES } from '../data/criteria';
-import { getAssessmentById, getDashboardStats, loadAssessments } from '../utils/storage';
+import { getDashboardStats, loadAssessments } from '../utils/storage';
 import { exportResultsPdf } from '../utils/exportPdf';
 import DashboardCharts from './DashboardCharts';
 import ResultReport from './ResultReport';
@@ -100,12 +100,31 @@ function AdminDetail({ record, onBack }) {
 export default function AdminPanel({ onBack }) {
   const [authed, setAuthed] = useState(() => sessionStorage.getItem(AUTH_KEY) === '1');
   const [selectedId, setSelectedId] = useState(null);
-  const [records, setRecords] = useState(() => loadAssessments());
-  const stats = getDashboardStats();
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
-  function refresh() {
-    setRecords(loadAssessments());
-  }
+  const refresh = useCallback(async () => {
+    setLoading(true);
+    setLoadError('');
+    try {
+      const list = await loadAssessments();
+      setRecords(list);
+    } catch (err) {
+      setLoadError(err?.message ?? 'تعذّر تحميل التقييمات.');
+      setRecords([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (authed) {
+      refresh();
+    }
+  }, [authed, refresh]);
+
+  const stats = getDashboardStats(records);
 
   function handleLogout() {
     sessionStorage.removeItem(AUTH_KEY);
@@ -114,10 +133,10 @@ export default function AdminPanel({ onBack }) {
   }
 
   if (!authed) {
-    return <AdminLogin onLogin={() => { setAuthed(true); refresh(); }} onBack={onBack} />;
+    return <AdminLogin onLogin={() => { setAuthed(true); }} onBack={onBack} />;
   }
 
-  const selected = selectedId ? getAssessmentById(selectedId) : null;
+  const selected = selectedId ? records.find((r) => r.id === selectedId) ?? null : null;
 
   if (selected) {
     return (
@@ -133,8 +152,8 @@ export default function AdminPanel({ onBack }) {
       <div className="admin-header">
         <h2>لوحة الإدارة</h2>
         <div className="admin-header-actions">
-          <button type="button" className="btn-secondary btn-sm" onClick={refresh}>
-            تحديث
+          <button type="button" className="btn-secondary btn-sm" onClick={refresh} disabled={loading}>
+            {loading ? 'جاري التحميل...' : 'تحديث'}
           </button>
           <button type="button" className="btn-secondary btn-sm" onClick={handleLogout}>
             خروج
@@ -145,12 +164,16 @@ export default function AdminPanel({ onBack }) {
         </div>
       </div>
 
+      {loadError && <p className="form-error">{loadError}</p>}
+
       <DashboardCharts stats={stats} />
 
       <section className="admin-list-section">
         <h3>جميع التقييمات ({records.length})</h3>
 
-        {records.length === 0 ? (
+        {loading ? (
+          <p className="empty-list">جاري تحميل التقييمات...</p>
+        ) : records.length === 0 ? (
           <p className="empty-list">لا توجد تقييمات مسجّلة.</p>
         ) : (
           <div className="admin-table-wrap">

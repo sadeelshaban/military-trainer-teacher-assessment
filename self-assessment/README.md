@@ -34,6 +34,15 @@ npm run build
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `VITE_ADMIN_PASSWORD` | Yes (for admin) | Admin panel password. Never commit to git. |
+| `VITE_SUPABASE_URL` | Yes (production) | Supabase project URL |
+| `VITE_SUPABASE_ANON_KEY` | Yes (production) | Supabase anon/public key |
+| `VITE_BASE_PATH` | GitHub Pages only | e.g. `/military-trainer-teacher-assessment/` |
+
+Without Supabase env vars, assessments fall back to browser `localStorage` (local dev only).
+
+## Live demo
+
+https://military-trainer-assessment.vercel.app
 
 ## Features
 
@@ -41,4 +50,4 @@ npm run build
 - Two-phase scoring (core → excellence)
 - PDF export of results
 - Admin dashboard with charts and per-user PDF export
-- Data stored in browser `localStorage`
+- Assessments stored in **Supabase** (shared across devices)
