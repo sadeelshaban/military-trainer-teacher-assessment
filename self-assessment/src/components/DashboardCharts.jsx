@@ -64,9 +64,9 @@ export default function DashboardCharts({ stats }) {
   }
 
   const levelSegments = [
-    { label: 'في مسار التطوير', value: stats.levelCounts.needs_development, color: '#8b2635' },
+    { label: 'في مسار التطوير', value: stats.levelCounts.needs_development, color: '#6b7c93' },
     { label: 'ناجح', value: stats.levelCounts.success, color: '#1e3a5f' },
-    { label: 'متميز', value: stats.levelCounts.distinguished, color: '#7a5c1e' },
+    { label: 'متميز', value: stats.levelCounts.distinguished, color: '#c9a227' },
   ];
 
   const roleBars = [
@@ -75,9 +75,9 @@ export default function DashboardCharts({ stats }) {
   ];
 
   const levelBars = [
-    { label: 'في مسار التطوير', value: stats.levelPercentages.needs_development, color: '#8b2635' },
+    { label: 'في مسار التطوير', value: stats.levelPercentages.needs_development, color: '#6b7c93' },
     { label: 'ناجح', value: stats.levelPercentages.success, color: '#1e3a5f' },
-    { label: 'متميز', value: stats.levelPercentages.distinguished, color: '#7a5c1e' },
+    { label: 'متميز', value: stats.levelPercentages.distinguished, color: '#c9a227' },
   ];
 
   return (

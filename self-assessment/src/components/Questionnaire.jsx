@@ -56,6 +56,7 @@ export default function Questionnaire({
         current={questionIndex + 1}
         total={totalQuestions}
         sectionTitle={sectionTitle}
+        completionNote={`نسبة الإكمال: ${completionPercent(scores, roleId)}%`}
       />
 
       <div className="question-card">
@@ -81,7 +82,7 @@ export default function Questionnaire({
         <p className="question-text">{current.question}</p>
 
         <details className="indicators-hint">
-          <summary>مؤشرات السلوك (مرجع)</summary>
+          <summary>عرض مؤشرات السلوك (مرجع)</summary>
           <ul>
             {current.indicators.map((ind) => (
               <li key={ind}>{ind}</li>
@@ -106,10 +107,6 @@ export default function Questionnaire({
         </div>
 
         {saveError && <p className="form-error">{saveError}</p>}
-
-        <p className="completion-note">
-          نسبة الإكمال: {completionPercent(scores, roleId)}%
-        </p>
       </div>
     </div>
   );

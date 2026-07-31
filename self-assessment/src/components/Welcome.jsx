@@ -61,8 +61,8 @@ export default function Welcome({ onStart }) {
         </div>
       </div>
 
-      <div className="info-box">
-        <h4>كيف يعمل التصنيف؟</h4>
+      <div className="alert-card">
+        <div className="alert-card-title">💡 كيف يعمل التصنيف؟</div>
         <ul>
           <li><strong>جميع الأسئلة:</strong> 12 معيار نجاح + 12 معيار تميز في استبيان واحد</li>
           <li><strong>النجاح:</strong> متوسط 3.5+ في المعايير الأساسية مع شروط إضافية</li>
@@ -73,7 +73,7 @@ export default function Welcome({ onStart }) {
 
       <button
         type="button"
-        className="btn-primary btn-start"
+        className="btn-accent btn-start"
         onClick={handleStart}
         disabled={!role}
       >

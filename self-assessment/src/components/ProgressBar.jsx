@@ -1,4 +1,4 @@
-export default function ProgressBar({ current, total, sectionTitle }) {
+export default function ProgressBar({ current, total, sectionTitle, completionNote }) {
   const pct = Math.round((current / total) * 100);
   return (
     <div className="progress-wrap">
@@ -11,6 +11,9 @@ export default function ProgressBar({ current, total, sectionTitle }) {
       <div className="progress-track">
         <div className="progress-fill" style={{ width: `${pct}%` }} />
       </div>
+      {completionNote != null && (
+        <p className="progress-completion">{completionNote}</p>
+      )}
     </div>
   );
 }

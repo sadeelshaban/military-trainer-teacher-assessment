@@ -219,10 +219,10 @@ export default function AdminPanel({ onBack }) {
                     <td>
                       <button
                         type="button"
-                        className="btn-link"
+                        className="btn-pdf"
                         onClick={() => setSelectedId(r.id)}
                       >
-                        عرض / PDF
+                        📄 PDF
                       </button>
                     </td>
                   </tr>
