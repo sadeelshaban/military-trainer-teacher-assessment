@@ -66,7 +66,7 @@ export default function App() {
           <img src="/logo.png" alt="لجنة تقييم كادر جامعة الاستقلال" className="header-logo" />
           <div>
             <strong>لجنة تقييم كادر جامعة الاستقلال</strong>
-            <span>نظام التقييم الذاتي</span>
+            <span>نظام التقييم</span>
           </div>
           {step !== STEPS.admin && (
             <button
@@ -104,7 +104,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>لجنة تقييم كادر جامعة الاستقلال — نظام التقييم الذاتي</p>
+        <p>لجنة تقييم كادر جامعة الاستقلال · نظام التقييم</p>
       </footer>
     </div>
   );

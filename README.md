@@ -1,59 +1,52 @@
-# Military Trainer & Teacher Self-Assessment
+# Al-Istiqlal University Staff Evaluation Committee
 
-A self-assessment web application for military trainers and teachers, with reference criteria, PDF reports, and an admin dashboard.
+**Evaluation System** for trainers and teachers at Al-Istiqlal University.
 
-> **Note:** The application UI is fully designed in **Arabic** (RTL). Repository documentation is in English.
+> **Important:** The entire application interface is in **Arabic** (right-to-left). This README is written in English for developers and visitors browsing the repository.
 
-## Repository contents
+## Live app
+
+**https://military-trainer-assessment.vercel.app**
+
+Share this link with staff who need to complete their evaluation.
+
+## Overview
+
+The system lets trainers and teachers:
+
+1. Enter their name and select their role (trainer or teacher)
+2. Answer **24 questions** in one questionnaire (12 success criteria + 12 excellence criteria)
+3. Receive an automatic level classification with feedback on strengths and gaps
+4. Download an **evaluation report** as PDF
+
+Administrators use a password-protected dashboard to view all submissions, statistics, and export individual reports.
+
+## Evaluation levels
+
+| Level | Meaning |
+|-------|---------|
+| **Development path** | Success criteria not met |
+| **Successful** (trainer / teacher) | Success criteria met; excellence needs improvement |
+| **Distinguished** (trainer / teacher) | Both success and excellence criteria met |
+
+If success criteria are **not** met, the report shows that **excellence was not achieved**, even when all 24 questions were answered.
+
+## Repository layout
 
 | Path | Description |
 |------|-------------|
 | `self-assessment/` | React + Vite web app (Arabic UI) |
-| `generate_criteria_pdf.py` | Script to generate criteria PDF (Arabic) |
-| `trainer_teacher_criteria.pdf` | Reference criteria document (Arabic PDF) |
+| `supabase/migrations/` | Database schema |
+| `generate_criteria_pdf.py` | Script to generate the criteria reference PDF |
+| `trainer_teacher_criteria.pdf` | Printable criteria document (Arabic) |
 
-## Quick start
+## Tech stack
 
-```bash
-cd self-assessment
-npm install
-cp .env.example .env   # set VITE_ADMIN_PASSWORD + Supabase keys in .env
-npm run dev
-```
-
-Open http://localhost:5173
-
-## Live link
-
-https://military-trainer-assessment.vercel.app
-
-Database: **Supabase** — table `assessments` (see `supabase/migrations/001_assessments.sql`).
+React · Vite · Supabase · Vercel · GitHub Actions (CI)
 
 ## Admin panel
 
-- Access via the **Admin** button in the header
-- Password is set via environment variable `VITE_ADMIN_PASSWORD` (see `.env.example`)
-- **Do not commit `.env` or expose the password in the repository**
-
-For production (Vercel), environment variables are configured in the Vercel project dashboard.
-
-## Assessment levels
-
-**Trainer:** Successful → Distinguished → Development path  
-**Teacher:** Successful → Distinguished → Development path
-
-Two-phase flow:
-1. **12 core criteria** — must pass to continue
-2. **12 excellence criteria** — only if phase 1 is passed
-
-## Build for production
-
-```bash
-cd self-assessment
-npm run build
-```
-
-Output: `self-assessment/dist/`
+Click **الإدارة** in the app header. The dashboard includes charts, a full assessment list, and PDF export per user.
 
 ## Generate criteria PDF
 
@@ -61,7 +54,3 @@ Output: `self-assessment/dist/`
 pip install fpdf2 arabic-reshaper python-bidi
 python generate_criteria_pdf.py
 ```
-
-## License
-
-Private / internal use — adjust as needed.

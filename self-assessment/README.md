@@ -1,53 +1,34 @@
-# Self-Assessment App
+# Evaluation System (Web App)
 
-React + Vite application for military trainer/teacher self-assessment.
+Arabic-language frontend for the **Al-Istiqlal University Staff Evaluation Committee**.
 
-> **UI language:** Arabic (RTL). This README is in English for repository documentation.
+> All user-facing text, labels, questions, and reports are in **Arabic (RTL)**. This file is in English for technical documentation only.
 
-## Setup
-
-```bash
-npm install
-cp .env.example .env
-```
-
-Edit `.env` and set:
-
-```
-VITE_ADMIN_PASSWORD=your_secure_password
-```
-
-## Development
-
-```bash
-npm run dev
-```
-
-## Production build
-
-```bash
-npm run build
-```
-
-## Environment variables
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `VITE_ADMIN_PASSWORD` | Yes (for admin) | Admin panel password. Never commit to git. |
-| `VITE_SUPABASE_URL` | Yes (production) | Supabase project URL |
-| `VITE_SUPABASE_ANON_KEY` | Yes (production) | Supabase anon/public key |
-| `VITE_BASE_PATH` | Optional | Custom base path for static hosting |
-
-Without Supabase env vars, assessments fall back to browser `localStorage` (local dev only).
-
-## Live demo
-
-https://military-trainer-assessment.vercel.app
+**Live app:** https://military-trainer-assessment.vercel.app
 
 ## Features
 
-- Self-assessment questionnaire (trainer / teacher roles)
-- Two-phase scoring (core → excellence)
-- PDF export of results
-- Admin dashboard with charts and per-user PDF export
-- Assessments stored in **Supabase** (shared across devices)
+- University branding (logo, committee name)
+- Role selection: trainer or teacher
+- Single 24-question flow (success + excellence)
+- Automatic scoring and gap analysis
+- **Evaluation report** PDF export
+- Admin dashboard with statistics and per-user PDFs
+
+## Folder structure
+
+```
+src/components/   Screens (welcome, questionnaire, results, admin)
+src/data/         Criteria and questions (Arabic)
+src/utils/        Scoring, storage, PDF export
+src/lib/          Supabase client
+public/logo.png   University logo
+```
+
+## Scoring (summary)
+
+**Success:** average ≥ 3.5 on 12 core criteria, plus rules for critical criteria.
+
+**Excellence:** only scored after success is met: average ≥ 4.0, at least 9 criteria at 4+, at least 5 at 5/5.
+
+See the root [README](../README.md) for full project documentation.

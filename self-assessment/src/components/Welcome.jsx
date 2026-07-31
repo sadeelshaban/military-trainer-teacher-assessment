@@ -19,7 +19,7 @@ export default function Welcome({ onStart }) {
   return (
     <div className="welcome">
       <img src="/logo.png" alt="لجنة تقييم كادر جامعة الاستقلال" className="welcome-logo" />
-      <div className="welcome-badge">نظام التقييم الذاتي</div>
+      <div className="welcome-badge">نظام التقييم</div>
       <h1>لجنة تقييم كادر جامعة الاستقلال</h1>
       <p className="welcome-lead">
         سجّل اسمك، اختر دورك، ثم أجب عن جميع المعايير (24 سؤالاً — النجاح والتميز معاً).

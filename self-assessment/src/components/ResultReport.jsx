@@ -72,7 +72,7 @@ export default function ResultReport({ result, pdfRef, completedAt }) {
     <div ref={pdfRef} className="pdf-content">
       <div className="pdf-header">
         <img src="/logo.png" alt="" className="pdf-logo" />
-        <h2>تقرير التقييم الذاتي</h2>
+        <h2>تقرير التقييم</h2>
         <p>لجنة تقييم كادر جامعة الاستقلال</p>
         <p>
           {userName && <span>{userName} — </span>}
