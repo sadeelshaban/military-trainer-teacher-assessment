@@ -4,7 +4,7 @@ Arabic-language frontend for the **Al-Istiqlal University Staff Evaluation Commi
 
 > All user-facing text, labels, questions, and reports are in **Arabic (RTL)**. This file is in English for technical documentation only.
 
-**Live app:** https://military-trainer-assessment.vercel.app
+**Live app:** https://al-istiqlal-staff-evaluation.vercel.app
 
 ## Features
 

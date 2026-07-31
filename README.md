@@ -6,7 +6,7 @@
 
 ## Live app
 
-**https://military-trainer-assessment.vercel.app**
+**https://al-istiqlal-staff-evaluation.vercel.app**
 
 Share this link with staff who need to complete their evaluation.
 
