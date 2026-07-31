@@ -731,8 +731,12 @@ body {
   }
 
   .rating-segment {
-    padding: var(--space-1) 4px;
-    font-size: var(--text-md);
+    padding: var(--space-1) 2px;
+    min-height: 58px;
+  }
+
+  .rating-segment-label {
+    font-size: 0.6rem;
   }
 
   .nav-buttons {
@@ -1209,34 +1213,57 @@ body {
 .rating-segment {
   font-family: inherit;
   flex: 1;
-  padding: var(--space-2) var(--space-1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: var(--space-1) 0.35rem;
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--muted);
   transition: background 0.15s, color 0.15s;
   border-radius: 8px;
+  min-height: 64px;
+}
+
+.rating-segment-num {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.rating-segment-label {
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--muted);
+  max-width: 100%;
 }
 
 .rating-segment:hover {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
+}
+
+.rating-segment:hover .rating-segment-num,
+.rating-segment:hover .rating-segment-label {
   color: var(--navy);
 }
 
 .rating-segment.selected {
   background: var(--navy);
-  color: #fff;
   box-shadow: 0 2px 8px rgba(30, 58, 95, 0.25);
 }
 
+.rating-segment.selected .rating-segment-num,
+.rating-segment.selected .rating-segment-label {
+  color: #fff;
+}
+
 .rating-selected-label {
-  text-align: center;
-  margin: var(--space-1) 0 0;
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--navy);
+  display: none;
 }
 
 .rating-btn {

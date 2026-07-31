@@ -22,8 +22,8 @@ export default function Welcome({ onStart }) {
       <div className="welcome-badge">نظام التقييم</div>
       <h1>لجنة تقييم كادر جامعة الاستقلال</h1>
       <p className="welcome-lead">
-        سجّل اسمك، اختر دورك، ثم أجب عن جميع المعايير (24 سؤالاً — النجاح والتميز معاً).
-        يُقيَّم مستوى النجاح والتميز في النهاية.
+        أدخل اسمك واختر دورك، ثم أكمِل 24 سؤالاً تغطّي معايير النجاح والتميز.
+        يُحسب مستواك ويظهر تقريرك فور الانتهاء.
       </p>
 
       <div className="register-form">
@@ -73,7 +73,7 @@ export default function Welcome({ onStart }) {
 
       <button
         type="button"
-        className="btn-accent btn-start"
+        className="btn-primary btn-start"
         onClick={handleStart}
         disabled={!role}
       >

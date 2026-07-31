@@ -13,13 +13,11 @@ export default function RatingScale({ value, onChange }) {
             aria-pressed={value === n}
             aria-label={`${n} — ${RATING_LABELS[n].label}`}
           >
-            {n}
+            <span className="rating-segment-num">{n}</span>
+            <span className="rating-segment-label">{RATING_LABELS[n].label}</span>
           </button>
         ))}
       </div>
-      {value >= 1 && value <= 5 && (
-        <p className="rating-selected-label">{RATING_LABELS[value].label}</p>
-      )}
     </div>
   );
 }
